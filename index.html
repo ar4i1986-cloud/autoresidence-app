@@ -1,322 +1,203 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>AutoResident</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AutoResident Co.</title>
   <style>
     :root {
-      --bg: #0b0b0b;
-      --card: #141414;
       --brand: #ff7b00;
       --brand-soft: #ff9d2b;
       --text: #f2f2f2;
-      --muted: #a1a1a1;
+      --muted: #aaaaaa;
+      --bg: radial-gradient(circle at center, #141414 0%, #050505 100%);
     }
     * { box-sizing: border-box; }
-    html, body { height: 100%; margin: 0; background: var(--bg); color: var(--text); font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif; }
-    .screen {
-      position: relative;
-      min-height: 100dvh;
-      display: grid;
-      place-items: center;
-      padding: 20px;
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
       overflow: hidden;
     }
-    .hero {
-      position: relative;
-      width: min(980px, 92vw);
-      display: grid;
-      gap: 20px;
-      justify-items: center;
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       text-align: center;
-      animation: fadeIn .9s ease both;
+      padding: 20px;
+      flex-grow: 1;
     }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     .logo-wrap {
       position: relative;
-      display: grid;
-      place-items: center;
-      width: clamp(180px, 28vw, 320px);
-      aspect-ratio: 1/1;
+      width: clamp(180px, 26vw, 320px);
+      margin-bottom: 20px;
+    }
+    .logo {
+      width: 100%;
+      border-radius: 12px;
+      opacity: 0;
+      animation: fadeInLogo 2s ease-out forwards;
+      filter: drop-shadow(0 0 25px rgba(255,123,0,0.7));
     }
     .logo-wrap::before {
       content: "";
       position: absolute;
-      inset: -12%;
+      inset: -25%;
+      background: radial-gradient(circle, rgba(255,123,0,0.5) 0%, rgba(255,123,0,0.15) 50%, rgba(255,123,0,0) 80%);
       border-radius: 50%;
-      background: radial-gradient(closest-side, rgba(255,123,0,.35), rgba(255,123,0,.18) 45%, rgba(255,123,0,0) 70%);
       opacity: 0;
-      animation: glow 1.8s ease-out forwards;
+      animation: glowStart 3s ease-out forwards;
     }
-    @keyframes glow { 
-      0% { opacity: 0; filter: blur(22px); transform: scale(.85); }
-      60% { opacity: 1; filter: blur(28px); transform: scale(1.02); }
-      100% { opacity: .9; filter: blur(26px); transform: scale(1); }
+    @keyframes fadeInLogo {
+      0% { opacity: 0; transform: scale(0.95); }
+      100% { opacity: 1; transform: scale(1); }
     }
-    .logo {
-      width: 78%;
-      height: auto;
-      border-radius: 12px;
-      box-shadow: 0 0 0 rgba(0,0,0,0);
-      animation: logoIn 1.1s ease-out both .1s;
+    @keyframes glowStart {
+      0% { opacity: 0; transform: scale(0.8); }
+      60% { opacity: 1; transform: scale(1.05); }
+      100% { opacity: 0.8; transform: scale(1); }
     }
-    @keyframes logoIn { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: scale(1); } }
-    h1 { margin: 0; font-size: clamp(22px, 3vw, 34px); color: var(--brand); letter-spacing: .5px; }
-    p.tagline { margin: 0; color: var(--muted); max-width: 760px; }
-    .actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 8px; }
+    h1 {
+      color: var(--brand);
+      font-size: clamp(24px, 4vw, 36px);
+      margin: 10px 0 4px;
+    }
+    p.tagline {
+      color: var(--muted);
+      font-size: 1rem;
+      margin-bottom: 20px;
+    }
+    .buttons {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
     .btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #111;
+      color: var(--text);
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn:hover {
+      background: #1b1b1b;
+      border-color: var(--brand);
+      color: var(--brand-soft);
+    }
+    form.search {
+      background: #0b0b0b;
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      padding: 16px;
+      width: min(420px, 90vw);
+      display: grid;
+      gap: 12px;
+    }
+    label {
+      text-align: left;
+      color: var(--brand-soft);
+      font-size: 0.9rem;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px 10px;
+      background: #121212;
+      border: 1px solid #333;
+      color: var(--text);
+      border-radius: 8px;
+    }
+    button.search-btn {
       background: var(--brand);
       color: #fff;
       border: none;
-      padding: 12px 18px;
-      border-radius: 10px;
+      border-radius: 8px;
+      padding: 10px;
       font-weight: 600;
       cursor: pointer;
-      transition: transform .12s ease, background .2s ease;
+      transition: background 0.2s ease;
     }
-    .btn:hover { transform: translateY(-1px); background: var(--brand-soft); }
-    .partners {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
+    button.search-btn:hover { background: var(--brand-soft); }
+    footer {
+      color: #777;
+      font-size: 0.85rem;
+      margin: 10px 0;
     }
-    .partner {
-      position: absolute;
-      display: grid;
-      place-items: center;
-      background: #121212;
-      border: 1px solid #2a2a2a;
-      border-radius: 50%;
-      color: #eaeaea;
-      text-decoration: none;
-      box-shadow: 0 10px 30px rgba(0,0,0,.35);
-      opacity: 0;
-      transform: translateY(8px) scale(.92);
-      animation: popIn .8s ease forwards;
-    }
-    .partner:hover::after {
-      content: attr(data-tip);
-      position: absolute;
-      bottom: calc(100% + 8px);
-      white-space: nowrap;
-      background: #101010;
-      color: #fff;
-      border: 1px solid #2a2a2a;
-      padding: 6px 10px;
-      border-radius: 8px;
-      font-size: 12px;
-      box-shadow: 0 6px 18px rgba(0,0,0,.35);
-      pointer-events: none;
-    }
-    @keyframes popIn { to { opacity: 1; transform: translateY(0) scale(1); } }
-    .modal-backdrop {
-      position: fixed; inset: 0; background: rgba(0,0,0,.6); display: none; place-items: center; z-index: 30;
-    }
-    .modal { background: var(--card); border: 1px solid #2a2a2a; border-radius: 14px; width: min(640px, 92vw); padding: 18px; }
-    .modal h3 { margin: 0 0 8px; color: var(--brand); }
-    label { display:block; margin: 10px 0 4px; color: var(--brand-soft); }
-    input, select, textarea { width: 100%; background: #0f0f0f; border: 1px solid #2a2a2a; color: #fff; padding: 10px; border-radius: 10px; }
-    .modal .actions { justify-content: flex-end; margin-top: 12px; }
-    .close { background: transparent; border: 1px solid #2a2a2a; color: #ddd; }
-    body, .screen { overflow: hidden; }
   </style>
 </head>
 <body>
-  <main class="screen">
-    <div class="partners" id="partners"></div>
+  <main>
+    <div class="logo-wrap">
+      <img src="logo.jpg" alt="AutoResident Logo" class="logo">
+    </div>
+    <h1>AutoResident Co.</h1>
+    <p class="tagline">Место, где встречаются те, кто ищет и предлагает автомобили.</p>
 
-    <section class="hero">
-      <div class="logo-wrap">
-        <img class="logo" src="logo.jpg" alt="AutoResident Logo"/>
-      </div>
-      <h1>AutoResident Co.</h1>
-      <p class="tagline">Место, где встречаются те, кто ищет и предлагает автомобили поблизости.</p>
-      <div class="actions">
-        <button class="btn" id="findBtn">🔍 Хочу найти авто</button>
-        <button class="btn" id="offerBtn">🚗 Хочу предложить авто</button>
-      </div>
-    </section>
-  </main>
+    <div class="buttons">
+      <button class="btn">🔍 Хочу найти авто</button>
+      <button class="btn">🚗 Хочу предложить авто</button>
+    </div>
 
-  <div class="modal-backdrop" id="searchModal">
-    <div class="modal">
-      <h3>Поиск автомобиля</h3>
-      <label>Марка</label>
-      <input id="brand" placeholder="Hyundai, BMW..."/>
-      <label>Тип КПП</label>
+    <form class="search" id="searchForm">
+      <label>Марка:</label>
+      <input id="brand" placeholder="Например: Hyundai, BMW...">
+      <label>Тип КПП:</label>
       <select id="transmission">
         <option value="">Любой</option>
         <option value="автомат">Автомат</option>
         <option value="механика">Механика</option>
       </select>
-      <label>Бюджет (грн)</label>
+      <label>Бюджет (грн):</label>
       <div style="display:flex; gap:8px;">
-        <input id="minBudget" type="number" placeholder="от"/>
-        <input id="maxBudget" type="number" placeholder="до"/>
+        <input id="minBudget" type="number" placeholder="от">
+        <input id="maxBudget" type="number" placeholder="до">
       </div>
-      <label>Объем двигателя (л)</label>
-      <input id="engine" type="number" step="0.1" placeholder="например 2.0"/>
-      <div class="actions">
-        <button class="btn close" data-close="searchModal">Отмена</button>
-        <button class="btn" id="searchRun">Поиск</button>
-      </div>
-    </div>
-  </div>
+      <label>Объем двигателя (л):</label>
+      <input id="engine" type="number" step="0.1" placeholder="например 2.0">
+      <button type="submit" class="search-btn">Поиск</button>
+    </form>
+  </main>
 
-  <div class="modal-backdrop" id="offerModal">
-    <div class="modal">
-      <h3>Добавить предложение</h3>
-      <label>Марка и модель</label>
-      <input id="offerBrand" placeholder="Например Hyundai Tucson"/>
-      <label>Город</label>
-      <input id="offerCity" placeholder="Ваш город"/>
-      <label>Контакт</label>
-      <input id="offerContact" placeholder="Номер телефона или Telegram"/>
-      <label>Детали / Бюджет</label>
-      <textarea id="offerDetails" rows="3" placeholder="Например: до 20 000$, 2018+, автомат"></textarea>
-      <div class="actions">
-        <button class="btn close" data-close="offerModal">Отмена</button>
-        <button class="btn" id="offerSend">Отправить</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal-backdrop" id="resultsModal">
-    <div class="modal">
-      <h3>Результаты поиска</h3>
-      <div id="resultsList" style="display:grid; gap:8px;"></div>
-      <div class="actions">
-        <button class="btn" data-close="resultsModal">Закрыть</button>
-      </div>
-    </div>
-  </div>
+  <footer>© 2025 AutoResident Co. Все права защищены.</footer>
 
   <script>
     const GAS_URL = "https://script.google.com/macros/s/AKfycbwMDcbys01OYEaS5Q6yJyDsZ9PuREpmGwGuFDDI76yrT9D1d3a0-Mq0ulnTk2IhLjm52A/exec";
-    const cars = [
-      {brand:'Hyundai',model:'Tucson',year:2018,transmission:'автомат',engine:2.0,price:18000,city:'Kyiv',lat:50.45,lon:30.52},
-      {brand:'BMW',model:'X3',year:2017,transmission:'механика',engine:2.0,price:22000,city:'Lviv',lat:49.84,lon:24.03},
-      {brand:'Toyota',model:'Camry',year:2020,transmission:'автомат',engine:2.5,price:25000,city:'Odesa',lat:46.48,lon:30.73}
-    ];
-    const partners = [
-      { name: 'Partner A', lat: 50.45, lon: 30.52 },
-      { name: 'Partner B', lat: 49.84, lon: 24.03 },
-      { name: 'Partner C', lat: 46.48, lon: 30.73 }
-    ];
 
-    const partnersLayer = document.getElementById('partners');
-    const findBtn = document.getElementById('findBtn');
-    const offerBtn = document.getElementById('offerBtn');
-    const searchRun = document.getElementById('searchRun');
-    const resultsList = document.getElementById('resultsList');
-
-    function openModal(id) { document.getElementById(id).style.display = 'grid'; }
-    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-    document.querySelectorAll('.close').forEach(btn => btn.addEventListener('click', (e)=> closeModal(e.currentTarget.getAttribute('data-close'))));
-    document.querySelectorAll('[data-close="resultsModal"]').forEach(btn => btn.addEventListener('click', ()=> closeModal('resultsModal')));
-
-    let userPosition = null;
-    function requestGeo() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(p => {
-          userPosition = { lat: p.coords.latitude, lon: p.coords.longitude };
-          layoutPartners();
-        }, _ => layoutPartners());
-      } else { layoutPartners(); }
-    }
-
-    function distanceKm(a,b) {
-      const R=6371;
-      const dLat=(b.lat-a.lat)*Math.PI/180;
-      const dLon=(b.lon-a.lon)*Math.PI/180;
-      const lat1=a.lat*Math.PI/180;
-      const lat2=b.lat*Math.PI/180;
-      const x=Math.sin(dLat/2)**2+Math.sin(dLon/2)**2*Math.cos(lat1)*Math.cos(lat2);
-      return R*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x));
-    }
-
-    function layoutPartners() {
-      partnersLayer.innerHTML = '';
-      const rect = partnersLayer.getBoundingClientRect();
-      const cy = rect.height / 2;
-      const leftX = 52;
-      const rightX = rect.width - 52;
-      partners.forEach((p, i) => {
-        let dist = 50;
-        if (userPosition) dist = Math.max(1, Math.round(distanceKm(userPosition, p)));
-        else dist = [6,12,25][i%3];
-        const size = Math.max(42, Math.min(96, Math.round(160 / (1 + dist * 0.08))));
-        const y = cy + (i-1)*110;
-        const isLeft = i % 2 === 0;
-        const x = isLeft ? leftX : rightX;
-        const el = document.createElement('a');
-        el.href = "#";
-        el.className = "partner";
-        el.style.width = size + "px";
-        el.style.height = size + "px";
-        el.style.left = (x - size/2) + "px";
-        el.style.top = (y - size/2) + "px";
-        el.style.animationDelay = (0.5 + i*0.12) + "s";
-        el.setAttribute('data-tip', p.name + " — " + dist + " км");
-        el.innerHTML = `<span style="pointer-events:none;font-weight:800;font-size:${Math.max(12, size*0.24)}px;">${p.name.split(' ').map(w=>w[0]).join('')}</span>`;
-        partnersLayer.appendChild(el);
-      });
-    }
-
-    findBtn.addEventListener('click', ()=>{ openModal('searchModal'); requestGeo(); });
-    offerBtn.addEventListener('click', ()=>{ openModal('offerModal'); requestGeo(); });
-
-    searchRun.addEventListener('click', () => {
-      const brand = (document.getElementById('brand').value||'').toLowerCase();
+    document.getElementById('searchForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const brand = document.getElementById('brand').value.trim();
       const transmission = document.getElementById('transmission').value;
-      const minBudget = parseFloat(document.getElementById('minBudget').value)||0;
-      const maxBudget = parseFloat(document.getElementById('maxBudget').value)||Infinity;
-      const engine = parseFloat(document.getElementById('engine').value)||0;
+      const minBudget = document.getElementById('minBudget').value;
+      const maxBudget = document.getElementById('maxBudget').value;
+      const engine = document.getElementById('engine').value;
+      const location = "";
 
-      let results = cars.filter(c =>
-        (!brand || c.brand.toLowerCase().includes(brand)) &&
-        (!transmission || c.transmission === transmission) &&
-        c.price >= minBudget && c.price <= maxBudget &&
-        (!engine || c.engine >= engine)
-      );
-      if (userPosition) results = results.map(c => ({...c, dist: Math.round(distanceKm(userPosition, {lat:c.lat, lon:c.lon}))})).sort((a,b)=>a.dist-b.dist);
-      resultsList.innerHTML = results.length
-        ? results.map(c => `<div style="border:1px solid #2a2a2a;border-left:3px solid var(--brand);padding:10px;border-radius:10px;background:#121212;">
-            <strong>${c.brand} ${c.model}</strong><br/>
-            ${c.year} • ${c.transmission} • ${c.engine} л • ${c.price}$ • ${c.city} ${c.dist?`• ≈ ${c.dist} км`:''}
-          </div>`).join('')
-        : `<p style="color:#bdbdbd;">Ничего не найдено.</p>`;
-      openModal('resultsModal');
-    });
-
-    document.getElementById('offerSend').addEventListener('click', async () => {
-      const brand = document.getElementById('offerBrand').value.trim();
-      const city = document.getElementById('offerCity').value.trim();
-      const contact = document.getElementById('offerContact').value.trim();
-      const details = document.getElementById('offerDetails').value.trim();
-      const location = userPosition ? `${userPosition.lat.toFixed(5)}, ${userPosition.lon.toFixed(5)}` : '';
+      const payload = {
+        type: 'Поиск',
+        brand, transmission, minBudget, maxBudget, engine, location
+      };
 
       try {
-        const res = await fetch(GAS_URL, {
+        await fetch(GAS_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            type: 'Партнёр',
-            brand, city, contact, details, location
-          })
+          body: JSON.stringify(payload)
         });
-        await res.text();
-        alert('✅ Заявка отправлена! Спасибо.');
-        closeModal('offerModal');
-      } catch (e) {
-        alert('❌ Не удалось отправить. Проверьте интернет или доступ к скрипту.');
+        alert('✅ Запрос успешно отправлен!');
+      } catch (err) {
+        alert('❌ Ошибка при отправке данных. Проверьте подключение.');
       }
-    });
-
-    window.addEventListener('load', () => {
-      requestGeo();
-      window.addEventListener('resize', layoutPartners);
     });
   </script>
 </body>
